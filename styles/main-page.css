@@ -59,7 +59,7 @@
     text-decoration: none;
 }
 
-.link:not(.link-disabled):hover {
+.link:hover {
     color: var(--color_primary);
 }
 
