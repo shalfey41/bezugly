@@ -4,6 +4,7 @@ import '../styles/font.css';
 import '../styles/globals.css';
 import '../styles/normalize.css';
 import '../styles/main-page.css';
+import '../styles/posts.css';
 
 function MyApp({ Component, pageProps }) {
   return (

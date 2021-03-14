@@ -38,7 +38,7 @@
     flex-wrap: wrap;
 }
 
-.header-list-item a {
+.header-list-item .link {
     padding: 7px;
 }
 
@@ -64,8 +64,8 @@
 }
 
 .link-underline {
-    display: inline-block;
-    border-bottom: 2px solid var(--color_primary);
+    display: inline;
+    border-bottom: 4px solid var(--color_primary);
 }
 
 @media all and (min-width: 400px) {

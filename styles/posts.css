@@ -1,0 +1,24 @@
+.posts-page {
+    padding: 40px 0;
+}
+
+.posts-article {
+    margin-bottom: 30px;
+}
+
+@media all and (min-width: 710px) {
+    .posts-page-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .posts-page {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .posts-article {
+        margin-bottom: 60px;
+    }
+}
