@@ -8,8 +8,6 @@ import '../styles/main-page.css';
 import '../styles/posts.css';
 import '../styles/markdown.css';
 
-import "../helpers/firebase";
-
 function MyApp({ Component, pageProps }) {
   return (
     <Fragment>

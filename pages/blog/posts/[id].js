@@ -2,10 +2,10 @@ import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import { Prism } from 'react-syntax-highlighter';
 import gfm from 'remark-gfm';
-import firebase from "firebase/app";
 
 import highlighterStyle from "../../../helpers/highlighterStyle";
 import { formatDate } from "../../../helpers/date";
+import { getFirebase } from "../../../helpers/firebase";
 
 const renderers = {
   code: ({ language, value }) => {
@@ -84,7 +84,7 @@ export default function Post({ post = {}, prevPost, nextPost }) {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const db = firebase.firestore();
+  const db = getFirebase().firestore();
   const post = await db.collection('posts').where('slug', '==', id).get()
     .then((querySnapshot) => {
       if(querySnapshot.empty) {
@@ -147,7 +147,7 @@ export async function getStaticProps({ params: { id } }) {
 }
 
 export async function getStaticPaths() {
-  const db = firebase.firestore();
+  const db = getFirebase().firestore();
   const paths = await db.collection('posts').get()
     .then((querySnapshot) => {
       const posts = [];

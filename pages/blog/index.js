@@ -1,5 +1,5 @@
 import Link from "next/link";
-import firebase from "firebase/app";
+import { getFirebase } from "../../helpers/firebase";
 
 export default function Blog({ articles = [] }) {
   return (
@@ -44,7 +44,7 @@ export default function Blog({ articles = [] }) {
 }
 
 export async function getStaticProps() {
-  const db = firebase.firestore();
+  const db = getFirebase().firestore();
   const articles = await db.collection('posts').orderBy('published', 'desc').get()
     .then((querySnapshot) => {
       const posts = [];
