@@ -8,7 +8,7 @@ import style from './styles.module.css';
 const renderers = {
   code: ({ language, value }) => {
     if (language === 'idea') {
-      return <p className="idea">{value}</p>;
+      return <p className={style.idea}>{value}</p>;
     }
 
     return <Prism style={highlighterStyle} language={language} children={value} />;
@@ -18,7 +18,7 @@ const renderers = {
 export const Markdown = ({ children }) => {
   return (
     <div className={style.markdown}>
-      <ReactMarkdown plugins={[gfm]} renderers={renderers}>{children}</ReactMarkdown>
+      <ReactMarkdown allowDangerousHtml plugins={[gfm]} renderers={renderers}>{children}</ReactMarkdown>
     </div>
   )
 }
