@@ -17,7 +17,7 @@ const renderers = {
   },
 };
 
-export default function Post({ post = {} }) {
+export default function Post({ post = {}, prevPost, nextPost }) {
   return (
     <div className="posts-page">
       <header className="header">
@@ -49,6 +49,33 @@ export default function Post({ post = {} }) {
             </div>
           </article>
         </div>
+
+        {prevPost || nextPost ? (
+          <div className="page-container">
+            <div className="post-recent-container">
+              <div className="post-recent-item">
+                {prevPost && (
+                  <Link href={`/blog/posts/${prevPost.slug}`} passHref>
+                    <a className="post-recent-item-link">
+                      <p className="post-recent-item-label">Предыдущая заметка</p>
+                      <p className="post-recent-item-text">{prevPost.title}</p>
+                    </a>
+                  </Link>
+                )}
+              </div>
+              <div className="post-recent-item">
+                {nextPost && (
+                  <Link href={`/blog/posts/${nextPost.slug}`} passHref>
+                    <a className="post-recent-item-link">
+                      <p className="post-recent-item-label">Предыдущая заметка</p>
+                      <p className="post-recent-item-text">{nextPost.title}</p>
+                    </a>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : null}
       </main>
     </div>
   )
@@ -64,19 +91,55 @@ export async function getStaticProps({ params: { id } }) {
 
       const doc = querySnapshot.docs[0];
       const data = doc.data();
-      const published = formatDate(data.published.toDate().toString());
 
       return {
         id: doc.id,
         title: data.title,
         content: data.content,
-        published,
+        published: data.published,
       };
     });
+
+  const prevPostReq = db.collection('posts').orderBy('published', 'desc').startAfter(post.published).limit(1).get()
+    .then((querySnapshot) => {
+      if(querySnapshot.empty) {
+        return null;
+      }
+
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        title: data.title,
+        slug: data.slug,
+      };
+    });
+  const nextPostReq = db.collection('posts').orderBy('published').startAfter(post.published).limit(1).get()
+    .then((querySnapshot) => {
+      if(querySnapshot.empty) {
+        return null;
+      }
+
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        title: data.title,
+        slug: data.slug,
+      };
+    });
+
+  const [prevPost, nextPost] = await Promise.all([prevPostReq, nextPostReq]);
+
+  post.published = formatDate(post.published.toDate().toString())
 
   return {
     props: {
       post,
+      prevPost,
+      nextPost,
     },
   }
 }
