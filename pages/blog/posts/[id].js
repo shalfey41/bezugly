@@ -48,6 +48,8 @@ export default function Post({ post = {}, prevPost, nextPost }) {
               <ReactMarkdown plugins={[gfm]} renderers={renderers}>{post.content}</ReactMarkdown>
             </div>
           </article>
+
+          <p>{post.published}</p>
         </div>
 
         {prevPost || nextPost ? (
