@@ -1,12 +1,9 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
+import 'normalize.css';
+
 import '../styles/font.css';
 import '../styles/globals.css';
-import '../styles/normalize.css';
-
-import '../styles/main-page.css';
-import '../styles/posts.css';
-import '../styles/markdown.css';
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -1,0 +1,9 @@
+.article {
+    margin-bottom: 30px;
+}
+
+@media all and (min-width: 710px) {
+    .article {
+        margin-bottom: 60px;
+    }
+}

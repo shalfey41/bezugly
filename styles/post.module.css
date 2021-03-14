@@ -1,32 +1,28 @@
-.posts-page {
-    padding: 40px 0;
-}
-
-.posts-article {
+.article {
     margin-bottom: 30px;
 }
 
-.post-recent-item {
+.recent {
     margin-bottom: 24px;
 }
 
-.post-recent-item:last-child {
+.recentItem:last-child {
     margin-bottom: 0;
 }
 
-.post-recent-item-link {
+.recentLink {
     display: block;
     width: 100%;
     text-decoration: none;
     color: var(--color_white);
 }
 
-.post-recent-item-label {
+.recentLabel {
     margin: 0 0 4px;
     font-size: 15px;
 }
 
-.post-recent-item-text {
+.recentText {
     margin: 0;
     display: inline;
     font-size: 18px;
@@ -34,43 +30,32 @@
 }
 
 @media all and (min-width: 710px) {
-    .posts-page-header {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-    }
-
-    .posts-page {
-        padding-top: 60px;
-        padding-bottom: 60px;
-    }
-
-    .posts-article {
+    .article {
         margin-bottom: 60px;
     }
 
-    .post-recent-container {
+    .recent {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
     }
 
-    .post-recent-item {
+    .recentItem {
         margin-bottom: 0;
         width: 50%;
         box-sizing: border-box;
     }
 
-    .post-recent-item:first-child {
+    .recentItem:first-child {
         padding-right: 16px;
     }
 
-    .post-recent-item:last-child {
+    .recentItem:last-child {
         padding-left: 16px;
         text-align: right;
     }
 
-    .post-recent-item-link {
+    .recentLink {
         padding: 32px 0 56px;
     }
 }
