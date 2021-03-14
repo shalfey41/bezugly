@@ -1,7 +1,21 @@
 :root {
-    --color_white: #F1F1F1;
-    --color_black: #121416;
+    --color_white: #2f2f2f;
+    --color_black: #FFF;
     --color_primary: #4BB462;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color_white: #F1F1F1;
+        --color_black: #121416;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --color_white: #2f2f2f;
+        --color_black: #FFF;
+    }
 }
 
 body {
