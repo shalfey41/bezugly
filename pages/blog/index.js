@@ -1,6 +1,7 @@
 import Link from "next/link";
+import firebase from "firebase/app";
 
-export default function Blog() {
+export default function Blog({ articles = [] }) {
   return (
     <div className="posts-page">
       <header className="header">
@@ -25,62 +26,45 @@ export default function Blog() {
       </header>
       <main className="main">
         <div className="page-container">
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Обязательный initialValue при [].reduce</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Сбросить балласт</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Как еще использовать CSS-переменные</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Краевые случаи</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Гарантия трудоустройства на курсах</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
-          <article className="posts-article">
-            <Link href="/blog/posts/abc" passHref>
-              <a className="link">
-                <h1 className="title">
-                  <span className="link-underline">Ностальгирую о прошлом</span>
-                </h1>
-              </a>
-            </Link>
-          </article>
+          {articles.map(({ id, title, slug }) => (
+            <article className="posts-article" key={id}>
+              <Link href={`/blog/posts/${slug}`} passHref>
+                <a className="link">
+                  <h1 className="title">
+                    <span className="link-underline">{title}</span>
+                  </h1>
+                </a>
+              </Link>
+            </article>
+          ))}
         </div>
       </main>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const db = firebase.firestore();
+  const articles = await db.collection('posts').orderBy('published', 'desc').get()
+    .then((querySnapshot) => {
+      const posts = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        posts.push({
+          id: doc.id,
+          title: data.title,
+          slug: data.slug,
+        });
+      });
+
+      return posts;
+    });
+
+  return {
+    props: {
+      articles,
+    },
+  }
 }
