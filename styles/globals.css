@@ -1,16 +1,19 @@
-html,
+:root {
+    --color_white: #F1F1F1;
+    --color_black: #121416;
+    --color_primary: #4BB462;
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background-color: var(--color_black);
+    color: var(--color_white);
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Navigo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+@media all and (min-width: 400px) {
+    body {
+        font-size: 18px;
+    }
 }

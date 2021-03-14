@@ -1,6 +1,9 @@
 import { Fragment } from 'react';
-import Head from 'next/head'
-import '../styles/globals.css'
+import Head from 'next/head';
+import '../styles/font.css';
+import '../styles/globals.css';
+import '../styles/normalize.css';
+import '../styles/main-page.css';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -15,4 +18,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp
+export default MyApp;
