@@ -1,4 +1,13 @@
+.logo {
+    padding: 2px 0;
+    display: inline-block;
+}
+
 @media all and (min-width: 710px) {
+    .logo {
+        padding: 0;
+    }
+
     .header {
         display: flex;
         align-items: baseline;

@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <header className={theme.header}>
       <div className={`${theme.pageContainer} ${style.header}`}>
-        <Link href="/" passHref><a className={theme.link}><strong>Дима Безуглый</strong></a></Link>
+        <Link href="/" passHref><a className={`${theme.link} ${style.logo}`}><strong>Дима Безуглый</strong></a></Link>
         <NavList />
       </div>
     </header>

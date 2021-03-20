@@ -13,6 +13,14 @@ const renderers = {
 
     return <Prism style={highlighterStyle} language={language} children={value} />;
   },
+  image: ({ src, alt }) => {
+    return (
+      <span className={`js-image ${style.imageContainer}`}>
+        <img className={style.image} src={src} alt={alt} />
+        {alt && <span className={style.signature} dangerouslySetInnerHTML={{ __html: alt }} />}
+      </span>
+    );
+  }
 };
 
 export const Markdown = ({ children }) => {

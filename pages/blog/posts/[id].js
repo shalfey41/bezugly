@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Link from "next/link";
 
 import theme from '../../../styles/theme.module.css';
@@ -8,17 +9,30 @@ import { Header } from "../../../components/Header/Header";
 import { Markdown } from "../../../components/Markdown/Markdown";
 
 export default function Post({ post = {}, prevPost, nextPost }) {
+  useEffect(() => {
+    const images = document.querySelectorAll('.js-image');
+
+    for (let image of images) {
+      if (image.parentElement && image.parentElement.tagName === 'P') {
+        const p = image.parentElement;
+        const text = p.parentElement;
+
+        text.insertBefore(image, p);
+      }
+    }
+  }, []);
+
   return (
     <div className={theme.page}>
       <Header />
       <main>
         <div className={theme.pageContainer}>
           <article className={style.article}>
-            <h1 className={theme.title}>{post.title}</h1>
+            <h1 className={`${theme.title} ${style.title}`}>{post.title}</h1>
             <Markdown>{post.content}</Markdown>
           </article>
 
-          <p>{post.published}</p>
+          <p className={style.date}>{post.published}</p>
         </div>
 
         {prevPost || nextPost ? (
@@ -38,7 +52,7 @@ export default function Post({ post = {}, prevPost, nextPost }) {
                 {nextPost && (
                   <Link href={`/blog/posts/${nextPost.slug}`} passHref>
                     <a className={style.recentLink}>
-                      <p className={style.recentLabel}>Предыдущая заметка</p>
+                      <p className={style.recentLabel}>Следующая заметка</p>
                       <p className={style.recentText}>{nextPost.title}</p>
                     </a>
                   </Link>

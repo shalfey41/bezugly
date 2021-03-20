@@ -7,3 +7,9 @@
         margin-bottom: 60px;
     }
 }
+
+@media all and (min-width: 1024px) {
+    .article {
+        margin-bottom: 80px;
+    }
+}

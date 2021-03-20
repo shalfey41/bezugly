@@ -1,23 +1,29 @@
 .markdown p {
-    margin-top: 16px;
+    margin: 20px 0;
 }
 
 .markdown h1 {
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 25px;
+    line-height: 1.5;
 }
 
 .markdown h2 {
-    margin-top: 32px;
+    font-size: 20px;
+    margin-top: 30px;
 }
 
 .markdown h3 {
-    margin-top: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     font-size: 18px;
 }
 
+.markdown h2 + * {
+    margin-top: 0 !important;
+}
+
 .markdown h3 + * {
-    margin-top: 0;
+    margin-top: 0 !important;
 }
 
 .markdown a {
@@ -28,84 +34,70 @@
     color: var(--color_primary);
 }
 
-/* TODO */
-.markdown p .size_large {
-    font-size: 24px;
-}
-
 .markdown p code {
-    padding: 4px 16px;
+    padding: 4px 8px;
     background: #231f20;
     color: white;
     border-radius: 4px;
 }
 
-.markdown table {
-    margin: 16px 0;
-}
-
 .markdown img {
-    margin: 16px 0;
     max-width: 100%;
 }
 
-/* TODO */
-.markdown .signature p {
-    font-size: 15px;
+.markdown .signature {
+    display: block;
+    margin: 0;
+    font-size: 14px;
 }
 
 .markdown .idea {
     margin: 0;
-    padding: 20px 25px;
-    display: inline-block;
-    font-size: 28px;
-    line-height: 34px;
+    padding: 20px 24px;
+    font-size: 20px;
+    line-height: 1.4;
     border: 20px solid var(--color_primary);
-    box-sizing: border-box;
+    font-weight: bold;
 }
 
 .markdown iframe {
-    margin: 32px 0;
+    margin: 0;
     width: 100%;
     height: 250px;
 }
 
 .markdown hr {
-    margin: 32px 0;
+    margin: 30px 0;
 }
 
 .markdown pre {
-    margin: 32px 0;
+    margin: 30px 0;
 }
 
 .markdown blockquote {
-    margin: 32px 0;
-    font-size: 24px;
-}
-
-.markdown blockquote p {
-    font-size: inherit;
+    margin: 30px 0;
+    font-size: 22px;
     line-height: 1.5;
     max-width: 1150px;
 }
 
-.markdown__image-container {
-    display: inline-block;
+.markdown blockquote p {
+    max-width: 1150px;
+}
+
+.markdown .imageContainer {
+    display: block;
+    max-width: 1200px;
 }
 
 .markdown table {
-    display: block;
     border-collapse: collapse;
-    table-layout: fixed;
-    width: fit-content;
-    max-width: 100%;
-    border:0;
-    overflow-x: auto;
+    border: 0;
     scroll-behavior: smooth;
 }
 
 .markdown thead {
-    border-bottom: 1px solid var(--color_white);
+    border-bottom: 1px solid var(--color_text);
 }
 
 .markdown th {
@@ -121,13 +113,13 @@
 }
 
 .markdown tbody tr td {
-    padding-top: 25px;
+    padding-top: 20px;
 }
 
 .markdown th,
 .markdown td {
     text-align: left;
-    padding-right: 50px;
+    padding-right: 30px;
 }
 
 .markdown th {
@@ -136,6 +128,7 @@
 
 .markdown ul {
     list-style: none;
+    padding-left: 22px;
 }
 
 .markdown ol {
@@ -148,58 +141,40 @@
     padding-left: 10px;
 }
 
-@media (min-width: 768px) {
+@media all and (min-width: 400px) {
+    .markdown .signature {
+        font-size: 16px;
+    }
+}
+
+
+@media (min-width: 710px) {
     .markdown p {
-        margin-top: 24px;
+        margin: 30px 0;
     }
 
     .markdown h1 {
-        font-size: 36px;
-        line-height: 46px;
+        font-size: 40px;
     }
 
     .markdown h2 {
         margin-top: 40px;
-    }
-
-    .markdown h2 + * {
-        margin-top: 16px;
+        margin-bottom: 20px;
+        font-size: 30px;
     }
 
     .markdown h3 {
-        margin-top: 40px;
-    }
-
-    .markdown table {
-        margin: 24px 0;
-    }
-
-    .markdown image {
-        margin: 24px 0;
-    }
-
-    /* TODO */
-    .markdown image + .signature {
-        margin-top: -16px;
+        margin-top: 30px;
     }
 
     .markdown .idea {
-        margin: 24px 0;
-        padding: 50px 70px;
+        font-size: 40px;
+        padding: 40px 60px;
         border-width: 30px;
     }
 
     .markdown iframe {
-        margin: 24px 0;
         height: 450px;
-    }
-
-    .markdown hr {
-        margin: 24px 0;
-    }
-
-    .markdown pre {
-        margin: 24px 0;
     }
 
     .markdown h1,
@@ -208,22 +183,18 @@
     .markdown p,
     .markdown ul,
     .markdown ol,
-    /* TODO */
     .markdown .idea {
         max-width: 660px;
     }
 
     .markdown blockquote {
-        margin: 56px 0;
+        margin: 60px 0;
         font-size: 40px;
-    }
-
-    .markdown blockquote p {
         line-height: 1.4;
     }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1360px) {
     .markdown h1,
     .markdown h2,
     .markdown h3,
@@ -233,13 +204,7 @@
         max-width: 770px;
     }
 
-    /* TODO */
-    .markdown .idea {
-        max-width: 1050px;
-    }
-
     .markdown h1 {
         font-size: 55px;
-        line-height: 68px;
     }
 }

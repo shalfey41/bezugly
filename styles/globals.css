@@ -1,20 +1,20 @@
 :root {
-    --color_white: #2f2f2f;
-    --color_black: #FFF;
+    --color_background: #191d23;
+    --color_text: #FFF;
     --color_primary: #4BB462;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color_white: #F1F1F1;
-        --color_black: #121416;
+        --color_text: #F1F1F1;
+        --color_background: #222529;
     }
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --color_white: #2f2f2f;
-        --color_black: #FFF;
+        --color_background: #FFF;
+        --color_text: #222529;
     }
 }
 
@@ -39,8 +39,8 @@
 }
 
 body {
-    background-color: var(--color_black);
-    color: var(--color_white);
+    background-color: var(--color_background);
+    color: var(--color_text);
     font-size: 16px;
     line-height: 1.5;
     font-family: "Navigo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
