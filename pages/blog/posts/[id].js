@@ -7,6 +7,7 @@ import { formatDate } from "../../../helpers/date";
 import { getFirebase } from "../../../helpers/firebase";
 import { Header } from "../../../components/Header/Header";
 import { Markdown } from "../../../components/Markdown/Markdown";
+import { isDev } from "../../../helpers/env";
 
 export default function Post({ post = {}, prevPost, nextPost }) {
   useEffect(() => {
@@ -137,6 +138,10 @@ export async function getStaticPaths() {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
+
+        if (data.draft && !isDev()) {
+          return;
+        }
 
         posts.push(`/blog/posts/${data.slug}`);
       });

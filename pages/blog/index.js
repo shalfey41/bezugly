@@ -1,9 +1,10 @@
 import Link from "next/link";
 
-import { getFirebase } from "../../helpers/firebase";
-import { Header } from "../../components/Header/Header";
 import style from '../../styles/posts.module.css';
 import theme from '../../styles/theme.module.css';
+import { getFirebase } from "../../helpers/firebase";
+import { Header } from "../../components/Header/Header";
+import { isDev } from "../../helpers/env";
 
 export default function Blog({ articles = [] }) {
   return (
@@ -36,6 +37,10 @@ export async function getStaticProps() {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
+
+        if (data.draft && isDev()) {
+          return;
+        }
 
         posts.push({
           id: doc.id,
