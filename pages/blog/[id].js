@@ -33,8 +33,8 @@ export default function Post({ post = {}, prevPost, nextPost }) {
         <meta property="og:title" content={title} />
         <meta property="og:site_name" content={title} />
         <meta name="twitter:title" content={title} />
-        {post.content.length && <meta property="og:description" content={`${post.content.slice(30)}…`} />}
-        {post.content.length && <meta name="twitter:description" content={`${post.content.slice(30)}…`} />}
+        {post.content.length && <meta property="og:description" content={`${post.content.slice(0, 50)}…`} />}
+        {post.content.length && <meta name="twitter:description" content={`${post.content.slice(0, 50)}…`} />}
         {post.ogImageSrc && <meta property="og:image" content={post.ogImageSrc} />}
         {post.ogImageSrc && <meta property="twitter:image:src" content={post.ogImageSrc} />}
       </Head>
