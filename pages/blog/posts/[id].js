@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Link from "next/link";
+import Head from 'next/head';
 
 import theme from '../../../styles/theme.module.css';
 import style from '../../../styles/post.module.css';
@@ -7,9 +8,11 @@ import { formatDate } from "../../../helpers/date";
 import { getFirebase } from "../../../helpers/firebase";
 import { Header } from "../../../components/Header/Header";
 import { Markdown } from "../../../components/Markdown/Markdown";
-import { isDev } from "../../../helpers/env";
+import { canShowPost } from "../../../helpers/post";
 
 export default function Post({ post = {}, prevPost, nextPost }) {
+  const title = post.title || 'Заметка Димы Безуглого';
+
   useEffect(() => {
     const images = document.querySelectorAll('.js-image');
 
@@ -25,6 +28,17 @@ export default function Post({ post = {}, prevPost, nextPost }) {
 
   return (
     <div className={theme.page}>
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:site_name" content={title} />
+        <meta name="twitter:title" content={title} />
+        {post.content.length && <meta property="og:description" content={`${post.content.slice(30)}…`} />}
+        {post.content.length && <meta name="twitter:description" content={`${post.content.slice(30)}…`} />}
+        {post.ogImageSrc && <meta property="og:image" content={post.ogImageSrc} />}
+        {post.ogImageSrc && <meta property="twitter:image:src" content={post.ogImageSrc} />}
+      </Head>
+
       <Header />
       <main>
         <div className={theme.pageContainer}>
@@ -78,11 +92,16 @@ export async function getStaticProps({ params: { id } }) {
       const doc = querySnapshot.docs[0];
       const data = doc.data();
 
+      if (!canShowPost(data)) {
+        return null;
+      }
+
       return {
         id: doc.id,
         title: data.title,
         content: data.content,
         published: data.published,
+        ogImageSrc: data.ogImageSrc || null,
       };
     });
 
@@ -94,6 +113,10 @@ export async function getStaticProps({ params: { id } }) {
 
       const doc = querySnapshot.docs[0];
       const data = doc.data();
+
+      if (!canShowPost(data)) {
+        return null;
+      }
 
       return {
         id: doc.id,
@@ -109,6 +132,10 @@ export async function getStaticProps({ params: { id } }) {
 
       const doc = querySnapshot.docs[0];
       const data = doc.data();
+
+      if (!canShowPost(data)) {
+        return null;
+      }
 
       return {
         id: doc.id,
@@ -139,7 +166,7 @@ export async function getStaticPaths() {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
 
-        if (data.draft && !isDev()) {
+        if (!canShowPost(data)) {
           return;
         }
 

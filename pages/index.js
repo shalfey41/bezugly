@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { NavList } from "../components/NavList/NavList";
 import style from '../styles/main-page.module.css';
 import theme from '../styles/theme.module.css';
@@ -5,6 +6,17 @@ import theme from '../styles/theme.module.css';
 export default function MainPage() {
   return (
     <div className={`${theme.page} ${style.page}`}>
+      <Head>
+        <title>Дима Безуглый</title>
+        <meta property="og:title" content="Дима Безуглый, фронтенд-тимлид" />
+        <meta property="og:site_name" content="Дима Безуглый, фронтенд-тимлид" />
+        <meta name="twitter:title" content="Дима Безуглый, фронтенд-тимлид" />
+        <meta property="og:description" content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте." />
+        <meta name="twitter:description" content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте." />
+        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.png" />
+        <meta property="twitter:image:src" content="https://bezugly.ru/images/main-page-avatar.png" />
+      </Head>
+
       <header className={theme.header}>
         <div className={`${theme.pageContainer} ${style.headerInner}`}>
           <NavList className={style.navList} />
