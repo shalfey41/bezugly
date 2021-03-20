@@ -31,7 +31,7 @@ export default function Blog({ articles = [] }) {
         <div className={theme.pageContainer}>
           {articles.map(({ id, title, slug }) => (
             <article className={style.article} key={id}>
-              <Link href={`/blog/posts/${slug}`} passHref>
+              <Link href={`/blog/${slug}`} passHref>
                 <a className={theme.link}>
                   <h1 className={theme.title}>
                     <span className={theme.linkUnderline}>{title}</span>

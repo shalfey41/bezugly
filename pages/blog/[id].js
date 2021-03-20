@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import Link from "next/link";
 import Head from 'next/head';
 
-import theme from '../../../styles/theme.module.css';
-import style from '../../../styles/post.module.css';
-import { formatDate } from "../../../helpers/date";
-import { getFirebase } from "../../../helpers/firebase";
-import { Header } from "../../../components/Header/Header";
-import { Markdown } from "../../../components/Markdown/Markdown";
-import { canShowPost } from "../../../helpers/post";
+import theme from '../../styles/theme.module.css';
+import style from '../../styles/post.module.css';
+import { formatDate } from "../../helpers/date";
+import { getFirebase } from "../../helpers/firebase";
+import { Header } from "../../components/Header/Header";
+import { Markdown } from "../../components/Markdown/Markdown";
+import { canShowPost } from "../../helpers/post";
 
 export default function Post({ post = {}, prevPost, nextPost }) {
   const title = post.title || 'Заметка Димы Безуглого';
@@ -170,7 +170,7 @@ export async function getStaticPaths() {
           return;
         }
 
-        posts.push(`/blog/posts/${data.slug}`);
+        posts.push(`/blog/${data.slug}`);
       });
 
       return posts;

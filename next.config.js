@@ -5,7 +5,12 @@ module.exports = {
         source: '/blog/posts',
         destination: '/blog',
         permanent: true
-      }
+      },
+      {
+        source: '/blog/posts/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
     ]
   }
 }
