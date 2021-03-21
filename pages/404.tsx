@@ -5,8 +5,11 @@ import Head from 'next/head'
 import { NavList } from '../components/NavList/NavList'
 import theme from '../styles/theme.module.css'
 import style from '../styles/main-page.module.css'
+import { useAllHeight } from '../helpers/useAllHeight'
 
 const Custom404: FC = () => {
+  useAllHeight()
+
   return (
     <div className={`${theme.page} ${style.page}`}>
       <Head>
