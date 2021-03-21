@@ -23,6 +23,7 @@
 .avatar {
     width: 50vw;
     vertical-align: bottom;
+    border-radius: 50%;
 }
 
 @media all and (min-width: 400px) {

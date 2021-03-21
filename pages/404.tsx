@@ -16,10 +16,10 @@ const Custom404: FC = () => {
         <meta name="twitter:title" content="Страница не найдена — Дима Безуглый" />
         <meta property="og:description" content="Но когда-нибудь она обязательно найдется" />
         <meta name="twitter:description" content="Но когда-нибудь она обязательно найдется" />
-        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.png" />
+        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.jpg" />
         <meta
           property="twitter:image:src"
-          content="https://bezugly.ru/images/main-page-avatar.png"
+          content="https://bezugly.ru/images/main-page-avatar.jpg"
         />
       </Head>
 
@@ -35,7 +35,7 @@ const Custom404: FC = () => {
             <Link href="/">
               <img
                 className={style.avatar}
-                src="/images/main-page-avatar.png"
+                src="/images/main-page-avatar.jpg"
                 alt="Моя фотография"
                 width="142"
                 style={{ cursor: 'pointer' }}

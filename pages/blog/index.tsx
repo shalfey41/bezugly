@@ -33,10 +33,10 @@ const Blog: FC<Props> = ({ articles = [] }) => {
         <meta name="twitter:title" content={title} />
         <meta property="og:description" content="Пишу о жизни и работе во фронтенде" />
         <meta name="twitter:description" content="Пишу о жизни и работе во фронтенде" />
-        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.png" />
+        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.jpg" />
         <meta
           property="twitter:image:src"
-          content="https://bezugly.ru/images/main-page-avatar.png"
+          content="https://bezugly.ru/images/main-page-avatar.jpg"
         />
       </Head>
 

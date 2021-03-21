@@ -35,10 +35,10 @@ const MainPage: FC = () => {
           name="twitter:description"
           content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте."
         />
-        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.png" />
+        <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.jpg" />
         <meta
           property="twitter:image:src"
-          content="https://bezugly.ru/images/main-page-avatar.png"
+          content="https://bezugly.ru/images/main-page-avatar.jpg"
         />
       </Head>
 
@@ -57,7 +57,7 @@ const MainPage: FC = () => {
           <div className={style.content}>
             <img
               className={style.avatar}
-              src="/images/main-page-avatar.png"
+              src="/images/main-page-avatar.jpg"
               alt="Моя фотография"
               width="142"
             />
