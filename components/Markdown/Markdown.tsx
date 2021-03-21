@@ -16,9 +16,17 @@ const renderers = {
     return <Prism style={highlighterStyle} language={language} children={value} />
   },
   // eslint-disable-next-line react/display-name
+  paragraph: ({ children, node }) => {
+    if (node?.children[0]?.type === 'image') {
+      return children
+    }
+
+    return <p>{children}</p>
+  },
+  // eslint-disable-next-line react/display-name
   image: ({ src, alt }) => {
     return (
-      <span className={`js-image ${style.imageContainer}`}>
+      <span className={style.imageContainer}>
         <img className={style.image} src={src} alt={alt} />
         {alt && <span className={style.signature} dangerouslySetInnerHTML={{ __html: alt }} />}
       </span>

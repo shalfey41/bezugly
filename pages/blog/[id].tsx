@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -19,19 +19,6 @@ type Props = {
 
 const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
   const title = post.title || 'Заметка Димы Безуглого'
-
-  useEffect(() => {
-    const images = document.querySelectorAll('.js-image')
-
-    images.forEach((image) => {
-      if (image.parentElement && image.parentElement.tagName === 'P') {
-        const p = image.parentElement
-        const text = p.parentElement
-
-        text.insertBefore(image, p)
-      }
-    })
-  }, [])
 
   return (
     <div className={theme.page}>
