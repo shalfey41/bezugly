@@ -2,8 +2,8 @@ import { FC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { Prism } from 'react-syntax-highlighter'
-import highlighterStyle from '../../helpers/highlighterStyle'
 
+import highlighterStyle from '../../helpers/highlighterStyle'
 import style from './styles.module.css'
 
 const renderers = {
