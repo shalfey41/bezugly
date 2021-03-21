@@ -7,8 +7,7 @@ import style from '../../styles/posts.module.css'
 import theme from '../../styles/theme.module.css'
 import { getFirebase } from '../../helpers/firebase'
 import { Header } from '../../components/Header/Header'
-import { getWord } from '../../helpers/getWord'
-import { canShowPost } from '../../helpers/post'
+import { canShowPost, getWord } from '../../helpers/post'
 import { Post, FirebasePost } from '../../types/post'
 
 type Props = {

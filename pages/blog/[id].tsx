@@ -5,11 +5,10 @@ import Head from 'next/head'
 
 import theme from '../../styles/theme.module.css'
 import style from '../../styles/post.module.css'
-import { formatDate } from '../../helpers/date'
 import { getFirebase } from '../../helpers/firebase'
 import { Header } from '../../components/Header/Header'
 import { Markdown } from '../../components/Markdown/Markdown'
-import { canShowPost } from '../../helpers/post'
+import { canShowPost, formatDate } from '../../helpers/post'
 import { Post, FirebasePost } from '../../types/post'
 
 type Props = {
