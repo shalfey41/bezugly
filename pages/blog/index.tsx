@@ -1,3 +1,5 @@
+import { FC } from 'react';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from "next/link";
 
@@ -7,8 +9,13 @@ import { getFirebase } from "../../helpers/firebase";
 import { Header } from "../../components/Header/Header";
 import { getWord } from "../../helpers/getWord";
 import { canShowPost } from "../../helpers/post";
+import { Post, FirebasePost } from "../../types/post";
 
-export default function Blog({ articles = [] }) {
+type Props = {
+    articles: Post[];
+}
+
+const Blog: FC<Props> = ({ articles = [] }) => {
   const title = articles.length > 0
     ? `${articles.length} ${getWord(articles.length, ['заметка', 'заметки', 'заметок'])} Димы Безуглого`
     : 'Блог Димы Безуглого';
@@ -46,14 +53,14 @@ export default function Blog({ articles = [] }) {
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const db = getFirebase().firestore();
   const articles = await db.collection('posts').orderBy('published', 'desc').get()
     .then((querySnapshot) => {
       const posts = [];
 
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
+        const data = doc.data() as FirebasePost;
 
         if (!canShowPost(data)) {
           return;
@@ -75,3 +82,5 @@ export async function getStaticProps() {
     },
   }
 }
+
+export default Blog;

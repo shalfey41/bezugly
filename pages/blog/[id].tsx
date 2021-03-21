@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import Link from "next/link";
 import Head from 'next/head';
 
@@ -9,21 +10,28 @@ import { getFirebase } from "../../helpers/firebase";
 import { Header } from "../../components/Header/Header";
 import { Markdown } from "../../components/Markdown/Markdown";
 import { canShowPost } from "../../helpers/post";
+import { Post, FirebasePost } from "../../types/post";
 
-export default function Post({ post = {}, prevPost, nextPost }) {
+type Props = {
+    post: Post;
+    prevPost: Post;
+    nextPost: Post;
+};
+
+const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
   const title = post.title || 'Заметка Димы Безуглого';
 
   useEffect(() => {
     const images = document.querySelectorAll('.js-image');
 
-    for (let image of images) {
-      if (image.parentElement && image.parentElement.tagName === 'P') {
-        const p = image.parentElement;
-        const text = p.parentElement;
+      images.forEach((image) => {
+          if (image.parentElement && image.parentElement.tagName === 'P') {
+              const p = image.parentElement;
+              const text = p.parentElement;
 
-        text.insertBefore(image, p);
-      }
-    }
+              text.insertBefore(image, p);
+          }
+      });
   }, []);
 
   return (
@@ -81,7 +89,7 @@ export default function Post({ post = {}, prevPost, nextPost }) {
   )
 }
 
-export async function getStaticProps({ params: { id } }) {
+export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   const db = getFirebase().firestore();
   const post = await db.collection('posts').where('slug', '==', id).get()
     .then((querySnapshot) => {
@@ -90,7 +98,7 @@ export async function getStaticProps({ params: { id } }) {
       }
 
       const doc = querySnapshot.docs[0];
-      const data = doc.data();
+        const data = doc.data() as FirebasePost;
 
       if (!canShowPost(data)) {
         return null;
@@ -112,7 +120,7 @@ export async function getStaticProps({ params: { id } }) {
       }
 
       const doc = querySnapshot.docs[0];
-      const data = doc.data();
+        const data = doc.data() as FirebasePost;
 
       if (!canShowPost(data)) {
         return null;
@@ -131,7 +139,7 @@ export async function getStaticProps({ params: { id } }) {
       }
 
       const doc = querySnapshot.docs[0];
-      const data = doc.data();
+        const data = doc.data() as FirebasePost;
 
       if (!canShowPost(data)) {
         return null;
@@ -146,7 +154,8 @@ export async function getStaticProps({ params: { id } }) {
 
   const [prevPost, nextPost] = await Promise.all([prevPostReq, nextPostReq]);
 
-  post.published = formatDate(post.published.toDate().toString())
+  // @ts-ignore
+    post.published = formatDate(post.published.toDate().toString())
 
   return {
     props: {
@@ -157,14 +166,14 @@ export async function getStaticProps({ params: { id } }) {
   }
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const db = getFirebase().firestore();
   const paths = await db.collection('posts').get()
     .then((querySnapshot) => {
       const posts = [];
 
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
+        const data = doc.data() as FirebasePost;
 
         if (!canShowPost(data)) {
           return;
@@ -178,3 +187,5 @@ export async function getStaticPaths() {
 
   return { paths, fallback: false };
 }
+
+export default Article;

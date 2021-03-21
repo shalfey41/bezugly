@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import { Prism } from "react-syntax-highlighter";
@@ -23,9 +24,10 @@ const renderers = {
   }
 };
 
-export const Markdown = ({ children }) => {
-  return (
+export const Markdown: FC = ({ children }) => {
+    return (
     <div className={style.markdown}>
+      {/* @ts-ignore */}
       <ReactMarkdown allowDangerousHtml plugins={[gfm]} renderers={renderers}>{children}</ReactMarkdown>
     </div>
   )

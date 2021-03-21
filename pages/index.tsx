@@ -1,9 +1,11 @@
+import { FC } from 'react';
 import Head from "next/head";
 import { NavList } from "../components/NavList/NavList";
+
 import style from '../styles/main-page.module.css';
 import theme from '../styles/theme.module.css';
 
-export default function MainPage() {
+const MainPage: FC = () => {
   return (
     <div className={`${theme.page} ${style.page}`}>
       <Head>
@@ -42,3 +44,5 @@ export default function MainPage() {
     </div>
   );
 }
+
+export default MainPage;

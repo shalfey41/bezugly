@@ -1,10 +1,15 @@
+import { FC } from 'react';
 import Link from 'next/link';
 import classnames from 'classnames';
 
 import style from './styles.module.css';
 import theme from '../../styles/theme.module.css';
 
-export const NavList = ({ className }) => (
+type Props = {
+    className?: string;
+}
+
+export const NavList: FC<Props> = ({ className }) => (
   <nav>
     <ul className={classnames(style.navList, className)}>
       <li className={style.navListItem}>
