@@ -66,7 +66,7 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
             <div className={style.recent}>
               <div className={style.recentItem}>
                 {prevPost && (
-                  <Link href={`/blog/posts/${prevPost.slug}`} passHref>
+                  <Link href={`/blog/${prevPost.slug}`} passHref>
                     <a className={style.recentLink}>
                       <p className={style.recentLabel}>Предыдущая заметка</p>
                       <p className={style.recentText}>{prevPost.title}</p>
@@ -76,7 +76,7 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
               </div>
               <div className={style.recentItem}>
                 {nextPost && (
-                  <Link href={`/blog/posts/${nextPost.slug}`} passHref>
+                  <Link href={`/blog/${nextPost.slug}`} passHref>
                     <a className={style.recentLink}>
                       <p className={style.recentLabel}>Следующая заметка</p>
                       <p className={style.recentText}>{nextPost.title}</p>
