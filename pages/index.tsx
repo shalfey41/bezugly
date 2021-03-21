@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import Head from 'next/head'
 
 import { NavList } from '../components/NavList/NavList'
@@ -6,6 +6,20 @@ import theme from '../styles/theme.module.css'
 import style from '../styles/main-page.module.css'
 
 const MainPage: FC = () => {
+  useEffect(() => {
+    const appHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
+    }
+
+    appHeight()
+
+    window.addEventListener('resize', appHeight)
+
+    return () => {
+      window.removeEventListener('resize', appHeight)
+    }
+  }, [])
+
   return (
     <div className={`${theme.page} ${style.page}`}>
       <Head>

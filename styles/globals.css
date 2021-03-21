@@ -3,8 +3,7 @@
     --color_text: #FFF;
     --color_primary: #4BB462;
 
-    --safe-inset-top: env(safe-area-inset-top, 0px);
-    --safe-inset-bottom: env(safe-area-inset-bottom, 0px);
+    --app-height: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
