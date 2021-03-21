@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import Head from 'next/head'
-import { NavList } from '../components/NavList/NavList'
 
-import style from '../styles/main-page.module.css'
+import { NavList } from '../components/NavList/NavList'
 import theme from '../styles/theme.module.css'
+import style from '../styles/main-page.module.css'
 
 const MainPage: FC = () => {
   return (
