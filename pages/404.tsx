@@ -1,10 +1,10 @@
-import { FC } from 'react';
-import Link from "next/link";
-import Head from "next/head";
+import { FC } from 'react'
+import Link from 'next/link'
+import Head from 'next/head'
 
-import theme from "../styles/theme.module.css";
-import style from "../styles/main-page.module.css";
-import { NavList } from "../components/NavList/NavList";
+import theme from '../styles/theme.module.css'
+import style from '../styles/main-page.module.css'
+import { NavList } from '../components/NavList/NavList'
 
 const Custom404: FC = () => {
   return (
@@ -17,7 +17,10 @@ const Custom404: FC = () => {
         <meta property="og:description" content="Но когда-нибудь она обязательно найдется" />
         <meta name="twitter:description" content="Но когда-нибудь она обязательно найдется" />
         <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.png" />
-        <meta property="twitter:image:src" content="https://bezugly.ru/images/main-page-avatar.png" />
+        <meta
+          property="twitter:image:src"
+          content="https://bezugly.ru/images/main-page-avatar.png"
+        />
       </Head>
 
       <header className={theme.header}>
@@ -39,13 +42,15 @@ const Custom404: FC = () => {
               />
             </Link>
             <div className={style.textColumn}>
-              <p className={`${theme.text} ${style.text}`}>Но когда-нибудь она обязательно найдется</p>
+              <p className={`${theme.text} ${style.text}`}>
+                Но когда-нибудь она обязательно найдется
+              </p>
             </div>
           </div>
         </div>
       </main>
     </div>
-  );
+  )
 }
 
-export default Custom404;
+export default Custom404

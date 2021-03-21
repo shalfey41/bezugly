@@ -11,42 +11,42 @@ const months = [
   'октября',
   'ноября',
   'декабря',
-];
-const halfAnHour = 1000 * 60 * 30;
-const oneHour = halfAnHour * 2;
-const oneHourAndHalf = oneHour + halfAnHour;
+]
+const halfAnHour = 1000 * 60 * 30
+const oneHour = halfAnHour * 2
+const oneHourAndHalf = oneHour + halfAnHour
 
 export const formatDate = (dateAndTime = '') => {
   if (!dateAndTime.length) {
-    return '';
+    return ''
   }
 
-  const date = new Date(Date.parse(dateAndTime));
-  const currentDate = new Date();
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const valueDifference = currentDate.valueOf() - date.valueOf();
+  const date = new Date(Date.parse(dateAndTime))
+  const currentDate = new Date()
+  const day = date.getDate()
+  const month = date.getMonth()
+  const year = date.getFullYear()
+  const valueDifference = currentDate.valueOf() - date.valueOf()
 
   if (currentDate.getFullYear() !== year) {
-    return `${day} ${months[month]} ${year}`;
+    return `${day} ${months[month]} ${year}`
   }
 
   if (currentDate.getDate() !== day) {
-    return `${day} ${months[month]}`;
+    return `${day} ${months[month]}`
   }
 
   if (valueDifference < halfAnHour) {
-    return 'Сейчас';
+    return 'Сейчас'
   }
 
   if (valueDifference < oneHour) {
-    return 'Полчаса назад';
+    return 'Полчаса назад'
   }
 
   if (valueDifference < oneHourAndHalf) {
-    return 'Час назад';
+    return 'Час назад'
   }
 
-  return 'Сегодня';
-};
+  return 'Сегодня'
+}
