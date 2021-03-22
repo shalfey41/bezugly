@@ -18,7 +18,7 @@ type Props = {
 }
 
 const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
-  const title = post.title || 'Заметка Димы Безуглого'
+  const title = post.title ? `${post.title} — блог Димы Безуглого` : 'Заметка Димы Безуглого'
 
   return (
     <div className={theme.page}>
