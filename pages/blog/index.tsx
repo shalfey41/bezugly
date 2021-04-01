@@ -46,7 +46,7 @@ const Blog: FC<Props> = ({ articles = [] }) => {
           {articles.map(({ id, title, slug }) => (
             <article className={style.article} key={id}>
               <Link href={`/blog/${slug}`} passHref>
-                <a className={theme.link}>
+                <a className={`${theme.link} ${style.link}`}>
                   <h1 className={theme.title}>
                     <span className={theme.linkUnderline}>{title}</span>
                   </h1>
