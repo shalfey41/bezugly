@@ -8,10 +8,6 @@
     padding-top: 0;
 }
 
-.article:last-child .link {
-    padding-bottom: 0;
-}
-
 @media all and (min-width: 710px) {
     .link {
         padding-top: 30px;
