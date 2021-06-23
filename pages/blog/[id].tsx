@@ -106,56 +106,42 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
       }
     })
 
-  const prevPostReq = db
+  let prevPost = null
+  let nextPost = null
+
+  await db
     .collection('posts')
     .orderBy('published', 'desc')
-    .startAfter(post.published)
-    .limit(1)
     .get()
     .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        return null
+      const posts = []
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as FirebasePost
+
+        if (!canShowPost(data)) {
+          return null
+        }
+
+        posts.push({
+          id: doc.id,
+          title: data.title,
+          slug: data.slug,
+        })
+      })
+
+      const currentPostIndex = posts.findIndex((post) => post.slug === id)
+
+      if (posts[currentPostIndex + 1]) {
+        prevPost = posts[currentPostIndex + 1]
       }
 
-      const doc = querySnapshot.docs[0]
-      const data = doc.data() as FirebasePost
-
-      if (!canShowPost(data)) {
-        return null
+      if (posts[currentPostIndex - 1]) {
+        nextPost = posts[currentPostIndex - 1]
       }
 
-      return {
-        id: doc.id,
-        title: data.title,
-        slug: data.slug,
-      }
+      return posts
     })
-  const nextPostReq = db
-    .collection('posts')
-    .orderBy('published')
-    .startAfter(post.published)
-    .limit(1)
-    .get()
-    .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        return null
-      }
-
-      const doc = querySnapshot.docs[0]
-      const data = doc.data() as FirebasePost
-
-      if (!canShowPost(data)) {
-        return null
-      }
-
-      return {
-        id: doc.id,
-        title: data.title,
-        slug: data.slug,
-      }
-    })
-
-  const [prevPost, nextPost] = await Promise.all([prevPostReq, nextPostReq])
 
   // @ts-ignore
   post.published = formatDate(post.published.toDate().toString())
