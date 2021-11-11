@@ -3,7 +3,7 @@
     display: inline-block;
 }
 
-@media all and (min-width: 710px) {
+@media all and (min-width: 800px) {
     .logo {
         padding: 0;
     }

@@ -22,6 +22,16 @@ export const NavList: FC<Props> = ({ className }) => (
       <li className={style.navListItem}>
         <a
           className={`${theme.link} ${style.navListItemLink}`}
+          href="https://karpov.courses/frontend"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span className={theme.linkUnderline}>Курс по фронтенду</span>
+        </a>
+      </li>
+      <li className={style.navListItem}>
+        <a
+          className={`${theme.link} ${style.navListItemLink}`}
           href="https://www.udemy.com/course/react-redux-2020/?referralCode=0C74053563423A398A3C"
           target="_blank"
           rel="noreferrer"
