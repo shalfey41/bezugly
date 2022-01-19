@@ -5,13 +5,18 @@ import Link from 'next/link'
 
 import style from '../../styles/posts.module.css'
 import theme from '../../styles/theme.module.css'
-import { getFirebase } from '../../helpers/firebase'
 import { Header } from '../../components/Header/Header'
-import { canShowPost, getWord } from '../../helpers/post'
-import { Post, FirebasePost } from '../../types/post'
+import { getWord } from '../../helpers/post'
+import { ArticlesStrapi } from '../../types/post'
+
+interface Article {
+  id: number
+  title: string
+  slug: string
+}
 
 type Props = {
-  articles: Post[]
+  articles: Article[]
 }
 
 const Blog: FC<Props> = ({ articles = [] }) => {
@@ -61,30 +66,23 @@ const Blog: FC<Props> = ({ articles = [] }) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const db = getFirebase().firestore()
-  const articles = await db
-    .collection('posts')
-    .orderBy('published', 'desc')
-    .get()
-    .then((querySnapshot) => {
-      const posts = []
+  let articles = []
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as FirebasePost
-
-        if (!canShowPost(data)) {
-          return
-        }
-
-        posts.push({
-          id: doc.id,
-          title: data.title,
-          slug: data.slug,
-        })
+  try {
+    articles = await fetch(
+      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc'
+    )
+      .then((response) => response.json())
+      .then((response: ArticlesStrapi) => {
+        return response.data.map((article) => ({
+          id: article.id,
+          title: article.attributes.title,
+          slug: article.attributes.slug,
+        }))
       })
-
-      return posts
-    })
+  } catch (error) {
+    //
+  }
 
   return {
     props: {

@@ -5,16 +5,21 @@ import Head from 'next/head'
 
 import theme from '../../styles/theme.module.css'
 import style from '../../styles/post.module.css'
-import { getFirebase } from '../../helpers/firebase'
 import { Header } from '../../components/Header/Header'
 import { Markdown } from '../../components/Markdown/Markdown'
-import { canShowPost, formatDate } from '../../helpers/post'
-import { Post, FirebasePost } from '../../types/post'
+import { formatDate } from '../../helpers/post'
+import { ArticlesStrapi } from '../../types/post'
 
 type Props = {
-  post: Post
-  prevPost: Post
-  nextPost: Post
+  post: {
+    id: number
+    title: string
+    content: string
+    published: string
+    ogImageSrc: string
+  }
+  prevPost: { id: number; title: string; slug: string }
+  nextPost: { id: number; title: string; slug: string }
 }
 
 const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
@@ -80,101 +85,85 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
-  const db = getFirebase().firestore()
-  const post = await db
-    .collection('posts')
-    .where('slug', '==', id)
-    .get()
-    .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        console.log('empty')
-      }
-
-      const doc = querySnapshot.docs[0]
-      const data = doc.data() as FirebasePost
-
-      if (!canShowPost(data)) {
-        return null
-      }
-
-      return {
-        id: doc.id,
-        title: data.title,
-        content: data.content,
-        published: data.published,
-        ogImageSrc: data.ogImageSrc || null,
-      }
-    })
-
+  let articles = []
+  let post = null
   let prevPost = null
   let nextPost = null
 
-  await db
-    .collection('posts')
-    .orderBy('published', 'desc')
-    .get()
-    .then((querySnapshot) => {
-      const posts = []
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as FirebasePost
-
-        if (!canShowPost(data)) {
-          return null
-        }
-
-        posts.push({
-          id: doc.id,
-          title: data.title,
-          slug: data.slug,
-        })
+  try {
+    articles = await fetch(
+      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc'
+    )
+      .then((response) => response.json())
+      .then((response: ArticlesStrapi) => {
+        return response.data.map((article) => ({
+          id: article.id,
+          title: article.attributes.title,
+          slug: article.attributes.slug,
+          content: article.attributes.content,
+          published: article.attributes.published,
+          ogImageSrc: article.attributes.ogImageSrc,
+        }))
       })
+  } catch (error) {
+    //
+  }
 
-      const currentPostIndex = posts.findIndex((post) => post.slug === id)
+  const postIndex = articles.findIndex((item) => item.slug === id)
 
-      if (posts[currentPostIndex + 1]) {
-        prevPost = posts[currentPostIndex + 1]
-      }
+  if (postIndex === -1) {
+    return {
+      props: {
+        post,
+        prevPost,
+        nextPost,
+      },
+    }
+  }
 
-      if (posts[currentPostIndex - 1]) {
-        nextPost = posts[currentPostIndex - 1]
-      }
-
-      return posts
-    })
-
-  // @ts-ignore
-  post.published = formatDate(post.published.toDate().toString())
+  post = articles[postIndex]
+  prevPost = articles[postIndex + 1] || null
+  nextPost = articles[postIndex - 1] || null
 
   return {
     props: {
-      post,
-      prevPost,
-      nextPost,
+      post: {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        published: formatDate(post.published),
+        ogImageSrc: post.ogImageSrc,
+      },
+      prevPost: prevPost
+        ? {
+            id: prevPost.id,
+            title: prevPost.title,
+            slug: prevPost.slug,
+          }
+        : null,
+      nextPost: nextPost
+        ? {
+            id: nextPost.id,
+            title: nextPost.title,
+            slug: nextPost.slug,
+          }
+        : null,
     },
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const db = getFirebase().firestore()
-  const paths = await db
-    .collection('posts')
-    .get()
-    .then((querySnapshot) => {
-      const posts = []
+  let paths = []
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as FirebasePost
-
-        if (!canShowPost(data)) {
-          return
-        }
-
-        posts.push(`/blog/${data.slug}`)
+  try {
+    paths = await fetch('https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc')
+      .then((response) => response.json())
+      .then((response: ArticlesStrapi) => {
+        return response.data.map((article) => `/blog/${article.attributes.slug}`)
       })
-
-      return posts
-    })
+  } catch (error) {
+    //
+  }
 
   return { paths, fallback: false }
 }

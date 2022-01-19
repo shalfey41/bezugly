@@ -1,22 +1,25 @@
-import firebase from 'firebase'
-import Timestamp = firebase.firestore.Timestamp
-
-export interface FirebasePost {
-  id: string
-  slug: string
-  title: string
-  content: string
-  published: Timestamp
-  ogImageSrc?: string
-  draft?: boolean
+export interface ArticleItemStrapi {
+  id: number
+  attributes: {
+    title: string
+    slug: string
+    published: string // // yyyy-mm-dd
+    ogImageSrc: string
+    content: string
+    createdAt: string // yyyy-MM-ddTHH:mm:ss-0Z00
+    updatedAt: string // yyyy-MM-ddTHH:mm:ss-0Z00
+    publishedAt: string // yyyy-MM-ddTHH:mm:ss-0Z00
+  }
 }
 
-export interface Post {
-  id: string
-  slug: string
-  title: string
-  content: string
-  published: string
-  ogImageSrc: string | null
-  draft?: boolean
+export interface ArticlesStrapi {
+  data: ArticleItemStrapi[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
 }

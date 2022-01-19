@@ -1,14 +1,3 @@
-import { isDev } from './env'
-import { FirebasePost } from '../types/post'
-
-export const canShowPost = (post: FirebasePost) => {
-  if (isDev()) {
-    return true
-  }
-
-  return !post.draft
-}
-
 const cases = [2, 0, 1, 1, 1, 2]
 // words: '1 заметка', '2 заметки', '5 заметок'
 export const getWord = (count, words) => {
