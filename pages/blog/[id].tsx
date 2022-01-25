@@ -8,7 +8,7 @@ import style from '../../styles/post.module.css'
 import { Header } from '../../components/Header/Header'
 import { Markdown } from '../../components/Markdown/Markdown'
 import { formatDate } from '../../helpers/post'
-import { ArticlesStrapi } from '../../types/post'
+import { ArticlesStrapi, ArticleItemStrapi } from '../../types/post'
 
 type Props = {
   post: {
@@ -16,10 +16,10 @@ type Props = {
     title: string
     content: string
     published: string
-    ogImageSrc: string
-  }
-  prevPost: { id: number; title: string; slug: string }
-  nextPost: { id: number; title: string; slug: string }
+    thumbnailSrc: string
+  } | null
+  prevPost: { id: number; title: string; slug: string } | null
+  nextPost: { id: number; title: string; slug: string } | null
 }
 
 const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
@@ -38,8 +38,8 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
         {post.content.length && (
           <meta name="twitter:description" content={`${post.content.slice(0, 50)}…`} />
         )}
-        {post.ogImageSrc && <meta property="og:image" content={post.ogImageSrc} />}
-        {post.ogImageSrc && <meta property="twitter:image:src" content={post.ogImageSrc} />}
+        <meta property="og:image" content={post.thumbnailSrc} />
+        <meta property="twitter:image:src" content={post.thumbnailSrc} />
       </Head>
 
       <Header />
@@ -85,31 +85,28 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
-  let articles = []
-  let post = null
-  let prevPost = null
-  let nextPost = null
+  let articles: ArticleItemStrapi[] = []
+  let post: ArticleItemStrapi | null = null
+  let prevPost: ArticleItemStrapi = null
+  let nextPost: ArticleItemStrapi = null
 
   try {
     articles = await fetch(
-      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc'
+      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc&populate=*'
     )
       .then((response) => response.json())
-      .then((response: ArticlesStrapi) => {
-        return response.data.map((article) => ({
-          id: article.id,
-          title: article.attributes.title,
-          slug: article.attributes.slug,
-          content: article.attributes.content,
-          published: article.attributes.published,
-          ogImageSrc: article.attributes.ogImageSrc,
-        }))
-      })
+      .then((articles: ArticlesStrapi) => articles.data)
   } catch (error) {
-    //
+    return {
+      props: {
+        post,
+        prevPost,
+        nextPost,
+      },
+    }
   }
 
-  const postIndex = articles.findIndex((item) => item.slug === id)
+  const postIndex = articles.findIndex((item) => item.attributes.slug === id)
 
   if (postIndex === -1) {
     return {
@@ -125,27 +122,35 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   prevPost = articles[postIndex + 1] || null
   nextPost = articles[postIndex - 1] || null
 
+  let thumbnailSrc = 'https://bezugly.ru/images/main-page-avatar.jpg'
+
+  if (post.attributes.thumbnail.data?.attributes?.url) {
+    thumbnailSrc = post.attributes.thumbnail.data?.attributes?.url
+  } else if (post.attributes.ogImageSrc) {
+    thumbnailSrc = post.attributes.ogImageSrc
+  }
+
   return {
     props: {
       post: {
         id: post.id,
-        title: post.title,
-        content: post.content,
-        published: formatDate(post.published),
-        ogImageSrc: post.ogImageSrc,
+        title: post.attributes.title,
+        content: post.attributes.content,
+        published: formatDate(post.attributes.published),
+        thumbnailSrc,
       },
       prevPost: prevPost
         ? {
             id: prevPost.id,
-            title: prevPost.title,
-            slug: prevPost.slug,
+            title: prevPost.attributes.title,
+            slug: prevPost.attributes.slug,
           }
         : null,
       nextPost: nextPost
         ? {
             id: nextPost.id,
-            title: nextPost.title,
-            slug: nextPost.slug,
+            title: nextPost.attributes.title,
+            slug: nextPost.attributes.slug,
           }
         : null,
     },
