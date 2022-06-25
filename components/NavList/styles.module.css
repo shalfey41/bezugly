@@ -21,5 +21,4 @@
 
 .navListItemLinkActive {
     color: var(--color_primary) !important;
-    cursor: default;
 }

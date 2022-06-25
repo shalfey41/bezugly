@@ -12,8 +12,8 @@ type Props = {
 
 export const NavList: FC<Props> = ({ className }) => {
   const router = useRouter()
-  const isBlog = router.pathname === '/blog'
-  const isReactCourse = router.pathname === '/react-redux-2020'
+  const isBlog = router.pathname.startsWith('/blog')
+  const isReactCourse = router.pathname.startsWith('/react-redux-2020')
 
   return (
     <nav>
