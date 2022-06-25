@@ -18,3 +18,8 @@
     padding: 4px 8px;
     display: inline-block;
 }
+
+.navListItemLinkActive {
+    color: var(--color_primary) !important;
+    cursor: default;
+}
