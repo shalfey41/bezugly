@@ -10,17 +10,26 @@ const ReactRedux2020: FC = () => {
   return (
     <div className={`${theme.page} ${style.page}`}>
       <Head>
-        <title>Курс React + Redux 2020 от Димы Безуглого</title>
-        <meta property="og:title" content="Курс React + Redux 2020 от Димы Безуглого" />
-        <meta property="og:site_name" content="Курс React + Redux 2020 от Димы Безуглого" />
-        <meta name="twitter:title" content="Курс React + Redux 2020 от Димы Безуглого" />
+        <title>Бесплатный курс [React + Redux 2020] от Димы Безуглого</title>
+        <meta
+          property="og:title"
+          content="Бесплатный курс [React + Redux 2020] от Димы Безуглого"
+        />
+        <meta
+          property="og:site_name"
+          content="Бесплатный курс [React + Redux 2020] от Димы Безуглого"
+        />
+        <meta
+          name="twitter:title"
+          content="Бесплатный курс [React + Redux 2020] от Димы Безуглого"
+        />
         <meta
           property="og:description"
-          content="Бесплатный курс для верстальщиков, которые знают основы JavaScript и хотят стать хорошими фронтендерами, чтобы устроиться в крупную компанию или брать проекты посерьезнее."
+          content="Для верстальщиков, которые знают основы JavaScript и хотят стать хорошими фронтендерами, чтобы устроиться в крупную компанию или брать проекты посерьезнее."
         />
         <meta
           name="twitter:description"
-          content="Бесплатный курс для верстальщиков, которые знают основы JavaScript и хотят стать хорошими фронтендерами, чтобы устроиться в крупную компанию или брать проекты посерьезнее."
+          content="Для верстальщиков, которые знают основы JavaScript и хотят стать хорошими фронтендерами, чтобы устроиться в крупную компанию или брать проекты посерьезнее."
         />
         <meta property="og:image" content="https://bezugly.ru/images/react-redux-2020-main.jpg" />
         <meta
