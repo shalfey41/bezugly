@@ -437,7 +437,7 @@ const ReactRedux2020: FC = () => {
               target="_blank"
               rel="noreferrer"
             >
-              Открыть бесплатный урок
+              Начать учиться
             </a>
           </div>
         </div>
