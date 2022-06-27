@@ -44,9 +44,9 @@ const ReactRedux2020: FC = () => {
           <div className={classnames(theme.pageContainer, style.container)}>
             <h1 className={style.promoTitle}>[React + Redux 2020]</h1>
             <p className={style.promoText}>
-              Бесплатный курс для верстальщиков, которые знают основы JavaScript и&nbsp;хотят стать
-              хорошими фронтендерами, чтобы устроиться в&nbsp;крупную компанию или брать проекты
-              посерьезнее.
+              Бесплатный курс для&nbsp;верстальщиков, которые знают основы JavaScript и&nbsp;хотят
+              стать хорошими фронтендерами, чтобы устроиться в&nbsp;крупную компанию или брать
+              проекты посерьезнее.
             </p>
 
             <div className={style.promoVideo}>
@@ -139,7 +139,9 @@ const ReactRedux2020: FC = () => {
                     alt="Зачем нужны фреймворки и как подключить реакт"
                     className={style.programImage}
                   />
-                  <p className={style.programText}>Зачем нужны фреймворки и как подключить реакт</p>
+                  <p className={style.programText}>
+                    Зачем нужны фреймворки и&nbsp;как подключить реакт
+                  </p>
                 </a>
               </div>
 
@@ -156,7 +158,7 @@ const ReactRedux2020: FC = () => {
                     alt="JSX и компонентный подход: делаем компоненты бутстрапа"
                   />
                   <p className={style.programText}>
-                    JSX и компонентный подход: делаем компоненты бутстрапа
+                    JSX и&nbsp;компонентный подход: делаем компоненты бутстрапа
                   </p>
                 </a>
               </div>
@@ -174,7 +176,7 @@ const ReactRedux2020: FC = () => {
                     alt="Как работает реакт, покоряем ребят на собеседовании"
                   />
                   <p className={style.programText}>
-                    Как работает реакт, покоряем ребят на собеседовании
+                    Как работает реакт, покоряем ребят на&nbsp;собеседовании
                   </p>
                 </a>
               </div>
@@ -223,7 +225,7 @@ const ReactRedux2020: FC = () => {
                     src="https://i.ytimg.com/vi/p04xaFi23Zg/maxresdefault.jpg"
                     alt="Рефакторинг и архитектура"
                   />
-                  <p className={style.programText}>Рефакторинг и архитектура</p>
+                  <p className={style.programText}>Рефакторинг и&nbsp;архитектура</p>
                 </a>
               </div>
 
@@ -303,7 +305,7 @@ const ReactRedux2020: FC = () => {
                     src="https://i.ytimg.com/vi/n8eerQrfzqc/maxresdefault.jpg"
                     alt="Рефакторинг и паттерны в реакте"
                   />
-                  <p className={style.programText}>Рефакторинг и паттерны в реакте</p>
+                  <p className={style.programText}>Рефакторинг и&nbsp;паттерны в&nbsp;реакте</p>
                 </a>
               </div>
 
@@ -319,7 +321,7 @@ const ReactRedux2020: FC = () => {
                     src="https://i.ytimg.com/vi/vGHNDrub7j0/maxresdefault.jpg"
                     alt="Рефакторинг и архитектура"
                   />
-                  <p className={style.programText}>Рефакторинг и архитектура</p>
+                  <p className={style.programText}>Рефакторинг и&nbsp;архитектура</p>
                 </a>
               </div>
 
@@ -335,7 +337,7 @@ const ReactRedux2020: FC = () => {
                     src="https://i.ytimg.com/vi/syGlah7Rz90/maxresdefault.jpg"
                     alt="Оптимизация и производительность"
                   />
-                  <p className={style.programText}>Оптимизация и производительность</p>
+                  <p className={style.programText}>Оптимизация и&nbsp;производительность</p>
                 </a>
               </div>
 
