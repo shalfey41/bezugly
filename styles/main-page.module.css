@@ -91,10 +91,6 @@
     .title {
         flex-shrink: 0;
         margin-right: 60px;
-        transform: translateY(-15px);
-    }
-
-    .navList {
-        margin-top: 19px;
+        transform: translateY(-19px);
     }
 }
