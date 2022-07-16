@@ -13,9 +13,9 @@ const MainPage: FC = () => {
     <div className={`${theme.page} ${style.page}`}>
       <Head>
         <title>Дима Безуглый</title>
-        <meta property="og:title" content="Дима Безуглый, фронтенд-тимлид" />
-        <meta property="og:site_name" content="Дима Безуглый, фронтенд-тимлид" />
-        <meta name="twitter:title" content="Дима Безуглый, фронтенд-тимлид" />
+        <meta property="og:title" content="Дима Безуглый, разработчик" />
+        <meta property="og:site_name" content="Дима Безуглый, разработчик" />
+        <meta name="twitter:title" content="Дима Безуглый, разработчик" />
         <meta
           property="og:description"
           content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте."
@@ -37,7 +37,7 @@ const MainPage: FC = () => {
           <h1 className={`${theme.title} ${style.title}`}>
             Дима Безуглый,
             <br />
-            фронтенд-тимлид
+            разработчик
           </h1>
         </div>
       </header>
@@ -52,12 +52,21 @@ const MainPage: FC = () => {
             />
             <div className={style.textColumn}>
               <p className={`${theme.text} ${style.text}`}>
-                Руковожу командой фронтенда в департаменте рекламных технологий ВК. До этого
-                разрабатывал интерфейсы в Яндексе и ВКонтакте.
+                Отвечаю за&nbsp;разработку{' '}
+                <a
+                  href="https://frogly.app"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={theme.link}
+                >
+                  <span className={theme.linkUnderline}>frogly.app</span>
+                </a>
+                . Руководил командой фронтенда в&nbsp;рекламе&nbsp;ВК, разрабатывал интерфейсы
+                в&nbsp;Яндексе и&nbsp;ВКонтакте.
               </p>
               <p className={`${theme.text} ${style.text}`}>
-                Пишу заметки, записываю курсы, запускаю проекты, помогаю разработчикам и вообще
-                я молодец.
+                Пишу заметки, записываю курсы, читаю доклады, помогаю разработчикам и&nbsp;вообще
+                я&nbsp;молодец.
               </p>
             </div>
           </div>
