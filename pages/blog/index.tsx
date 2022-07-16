@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -65,7 +65,7 @@ const Blog: FC<Props> = ({ articles = [] }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   let articles = []
 
   try {
