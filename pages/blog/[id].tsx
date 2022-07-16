@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { GetStaticProps, GetStaticPaths } from 'next'
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -84,7 +84,7 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params: { id } }) => {
   let articles: ArticleItemStrapi[] = []
   let post: ArticleItemStrapi | null = null
   let prevPost: ArticleItemStrapi = null
@@ -155,22 +155,6 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
         : null,
     },
   }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  let paths = []
-
-  try {
-    paths = await fetch('https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc')
-      .then((response) => response.json())
-      .then((response: ArticlesStrapi) => {
-        return response.data.map((article) => `/blog/${article.attributes.slug}`)
-      })
-  } catch (error) {
-    //
-  }
-
-  return { paths, fallback: false }
 }
 
 export default Article
