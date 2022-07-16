@@ -25,8 +25,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
         {!isDev() && (
           <Fragment>
-            <meta name="yandex-verification" content="892f090ef843257d" />
             {/* Yandex.Metrika counter */}
+            <meta name="yandex-verification" content="892f090ef843257d" />
             <script
               dangerouslySetInnerHTML={{
                 __html: `(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter31371433 = new Ya.Metrika2({ id:31371433, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, trackHash:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks2");`,
@@ -35,17 +35,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
             <noscript
               dangerouslySetInnerHTML={{
                 __html: `<div><img src="https://mc.yandex.ru/watch/31371433" style="position:absolute; left:-9999px;" alt="" /></div>`,
-              }}
-            />
-            {/* VK Pixel */}
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?167",t.onload=function(){VK.Retargeting.Init("VK-RTRG-482648-b8E5X"),VK.Retargeting.Hit()},document.head.appendChild(t)}();`,
-              }}
-            />
-            <noscript
-              dangerouslySetInnerHTML={{
-                __html: `<img src="https://vk.com/rtrg?p=VK-RTRG-482648-b8E5X" style="position:fixed; left:-999px;" alt=""/>`,
               }}
             />
           </Fragment>

@@ -28,15 +28,11 @@
 
 @media all and (min-width: 400px) {
     .title {
-        font-size: 35px;
+        font-size: 40px;
     }
 }
 
 @media all and (min-width: 710px) {
-    .navList {
-        margin-bottom: 40px;
-    }
-
     .content {
         display: flex;
         flex-direction: row-reverse;
@@ -96,5 +92,9 @@
         flex-shrink: 0;
         margin-right: 60px;
         transform: translateY(-15px);
+    }
+
+    .navList {
+        margin-top: 19px;
     }
 }

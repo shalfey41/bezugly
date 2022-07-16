@@ -18,11 +18,11 @@ const MainPage: FC = () => {
         <meta name="twitter:title" content="Дима Безуглый, разработчик" />
         <meta
           property="og:description"
-          content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте."
+          content="Отвечаю за разработку frogly.app и помогаю разработчикам стать сильнее"
         />
         <meta
           name="twitter:description"
-          content="Сейчас развиваю команду фронтенда в отделе рекламы и бизнеса ВКонтакте. До этого разрабатывал интерфейсы в Яндексе и ВКонтакте."
+          content="Отвечаю за разработку frogly.app и помогаю разработчикам стать сильнее"
         />
         <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.jpg" />
         <meta
@@ -34,11 +34,7 @@ const MainPage: FC = () => {
       <header className={theme.header}>
         <div className={`${theme.pageContainer} ${style.headerInner}`}>
           <NavList className={style.navList} />
-          <h1 className={`${theme.title} ${style.title}`}>
-            Дима Безуглый,
-            <br />
-            разработчик
-          </h1>
+          <h1 className={`${theme.title} ${style.title}`}>Дима Безуглый</h1>
         </div>
       </header>
       <main>
@@ -59,14 +55,14 @@ const MainPage: FC = () => {
                   rel="noreferrer"
                   className={theme.link}
                 >
-                  <span className={theme.linkUnderline}>frogly.app</span>
+                  <span className={theme.linkUnderline}>Frogly</span>
                 </a>
-                . Руководил командой фронтенда в&nbsp;рекламе&nbsp;ВК, разрабатывал интерфейсы
-                в&nbsp;Яндексе и&nbsp;ВКонтакте.
+                . Раньше руководил командой фронтенда в&nbsp;рекламном отделе&nbsp;VK, разрабатывал
+                интерфейсы в&nbsp;Яндексе и&nbsp;ВКонтакте.
               </p>
               <p className={`${theme.text} ${style.text}`}>
-                Пишу заметки, записываю курсы, читаю доклады, помогаю разработчикам и&nbsp;вообще
-                я&nbsp;молодец.
+                Обучаю фронтенду и помогаю разработчикам стать сильнее: преподаю на&nbsp;курсах,
+                пишу заметки, читаю доклады и&nbsp;консультирую лично.
               </p>
             </div>
           </div>

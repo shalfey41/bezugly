@@ -36,9 +36,7 @@ export const NavList: FC<Props> = ({ className }) => {
                 [style.navListItemLinkActive]: isReactCourse,
               })}
             >
-              <span className={!isReactCourse ? theme.linkUnderline : ''}>
-                Реакт для начинающих
-              </span>
+              <span className={!isReactCourse ? theme.linkUnderline : ''}>Реакт для джунов</span>
             </a>
           </Link>
         </li>
@@ -49,7 +47,7 @@ export const NavList: FC<Props> = ({ className }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <span className={theme.linkUnderline}>Фронденд для продвинутых</span>
+            <span className={theme.linkUnderline}>Фронденд для миддлов</span>
           </a>
         </li>
         <li className={style.navListItem}>
@@ -59,7 +57,7 @@ export const NavList: FC<Props> = ({ className }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <span className={theme.linkUnderline}>Канал в телеграме</span>
+            <span className={theme.linkUnderline}>Телеграм-канал</span>
           </a>
         </li>
       </ul>
