@@ -97,24 +97,14 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
       .then((response) => response.json())
       .then((articles: ArticlesStrapi) => articles.data)
   } catch (error) {
-    return {
-      props: {
-        post,
-        prevPost,
-        nextPost,
-      },
-    }
+    //
   }
 
   const postIndex = articles.findIndex((item) => item.attributes.slug === id)
 
   if (postIndex === -1) {
     return {
-      props: {
-        post,
-        prevPost,
-        nextPost,
-      },
+      notFound: true,
     }
   }
 
@@ -154,6 +144,7 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
           }
         : null,
     },
+    revalidate: 60,
   }
 }
 
@@ -170,7 +161,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     //
   }
 
-  return { paths, fallback: false }
+  return { paths, fallback: 'blocking' }
 }
 
 export default Article
