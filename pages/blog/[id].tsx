@@ -144,7 +144,7 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
           }
         : null,
     },
-    revalidate: 60,
+    revalidate: 10,
   }
 }
 
