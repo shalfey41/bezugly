@@ -1,5 +1,7 @@
 import { FC } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { Client, isFullPage } from '@notionhq/client'
+import { NotionToMarkdown } from 'notion-to-md'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -8,18 +10,26 @@ import style from '../../styles/post.module.css'
 import { Header } from '../../components/Header/Header'
 import { Markdown } from '../../components/Markdown/Markdown'
 import { formatDate } from '../../helpers/post'
-import { ArticlesStrapi, ArticleItemStrapi } from '../../types/post'
+import { ArticleItem } from '../../types/post'
+
+interface Post {
+  id: number
+  title: string
+  content: string
+  published: string
+  thumbnailSrc: string
+}
+
+interface PostPreview {
+  id: number
+  title: string
+  slug: string
+}
 
 type Props = {
-  post: {
-    id: number
-    title: string
-    content: string
-    published: string
-    thumbnailSrc: string
-  } | null
-  prevPost: { id: number; title: string; slug: string } | null
-  nextPost: { id: number; title: string; slug: string } | null
+  post: Post | null
+  prevPost: PostPreview | null
+  nextPost: PostPreview | null
 }
 
 const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
@@ -85,22 +95,52 @@ const Article: FC<Props> = ({ post = {}, prevPost, nextPost }) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
-  let articles: ArticleItemStrapi[] = []
-  let post: ArticleItemStrapi | null = null
-  let prevPost: ArticleItemStrapi = null
-  let nextPost: ArticleItemStrapi = null
+  const notion = new Client({ auth: process.env.NOTION_KEY })
+  const n2m = new NotionToMarkdown({ notionClient: notion })
+  const databaseId = process.env.NOTION_DATABASE_ID
+  const articles: ArticleItem[] = []
+  let post: ArticleItem | null = null
+  let prevPost: ArticleItem = null
+  let nextPost: ArticleItem = null
 
   try {
-    articles = await fetch(
-      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc&populate=*'
-    )
-      .then((response) => response.json())
-      .then((articles: ArticlesStrapi) => articles.data)
+    const database = await notion.databases.query({
+      database_id: databaseId,
+      sorts: [
+        {
+          property: 'Date',
+          direction: 'descending',
+        },
+      ],
+    })
+
+    database.results.forEach((page) => {
+      const pageId = page.id
+
+      if (isFullPage(page)) {
+        const pageProps = page.properties
+        const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
+        const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+        const date = pageProps.Date[pageProps.Date.type]?.start ?? new Date().toLocaleDateString()
+        const thumbnail = pageProps['Files & media'][pageProps['Files & media'].type][0]
+        const thumbnailSrc = thumbnail
+          ? thumbnail[thumbnail.type].url
+          : 'https://bezugly.ru/images/main-page-avatar.jpg'
+
+        articles.push({
+          id: pageId,
+          title: pageTitle,
+          slug,
+          thumbnailSrc,
+          date,
+        })
+      }
+    })
   } catch (error) {
-    //
+    console.error(error.body)
   }
 
-  const postIndex = articles.findIndex((item) => item.attributes.slug === id)
+  const postIndex = articles.findIndex((item) => item.slug === id)
 
   if (postIndex === -1) {
     return {
@@ -112,35 +152,30 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   prevPost = articles[postIndex + 1] || null
   nextPost = articles[postIndex - 1] || null
 
-  let thumbnailSrc = 'https://bezugly.ru/images/main-page-avatar.jpg'
-
-  if (post.attributes.thumbnail.data?.attributes?.url) {
-    thumbnailSrc = post.attributes.thumbnail.data?.attributes?.url
-  } else if (post.attributes.ogImageSrc) {
-    thumbnailSrc = post.attributes.ogImageSrc
-  }
+  const notionBlocks = await n2m.pageToMarkdown(post.id)
+  const content = n2m.toMarkdownString(notionBlocks)
 
   return {
     props: {
       post: {
         id: post.id,
-        title: post.attributes.title,
-        content: post.attributes.content,
-        published: formatDate(post.attributes.published),
-        thumbnailSrc,
+        title: post.title,
+        content,
+        published: formatDate(post.date),
+        thumbnailSrc: post.thumbnailSrc,
       },
       prevPost: prevPost
         ? {
             id: prevPost.id,
-            title: prevPost.attributes.title,
-            slug: prevPost.attributes.slug,
+            title: prevPost.title,
+            slug: prevPost.slug,
           }
         : null,
       nextPost: nextPost
         ? {
             id: nextPost.id,
-            title: nextPost.attributes.title,
-            slug: nextPost.attributes.slug,
+            title: nextPost.title,
+            slug: nextPost.slug,
           }
         : null,
     },
@@ -150,15 +185,28 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   let paths = []
+  const notion = new Client({ auth: process.env.NOTION_KEY })
+  const databaseId = process.env.NOTION_DATABASE_ID
 
   try {
-    paths = await fetch('https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc')
-      .then((response) => response.json())
-      .then((response: ArticlesStrapi) => {
-        return response.data.map((article) => `/blog/${article.attributes.slug}`)
+    const database = await notion.databases.query({
+      database_id: databaseId,
+    })
+
+    paths = database.results
+      .map((page) => {
+        if (isFullPage(page)) {
+          const pageProps = page.properties
+          const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+
+          return `/blog/${slug}`
+        }
+
+        return ''
       })
+      .filter(Boolean)
   } catch (error) {
-    //
+    console.error(error.body)
   }
 
   return { paths, fallback: 'blocking' }

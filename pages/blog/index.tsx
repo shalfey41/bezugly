@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { GetStaticProps } from 'next'
+import { Client, isFullPage } from '@notionhq/client'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -7,7 +8,6 @@ import style from '../../styles/posts.module.css'
 import theme from '../../styles/theme.module.css'
 import { Header } from '../../components/Header/Header'
 import { getWord } from '../../helpers/post'
-import { ArticlesStrapi } from '../../types/post'
 
 interface Article {
   id: number
@@ -66,22 +66,38 @@ const Blog: FC<Props> = ({ articles = [] }) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let articles = []
+  const notion = new Client({ auth: process.env.NOTION_KEY })
+  const databaseId = process.env.NOTION_DATABASE_ID
+  const articles = []
 
   try {
-    articles = await fetch(
-      'https://bezugly-admin.herokuapp.com/api/articles?sort[0]=published:desc'
-    )
-      .then((response) => response.json())
-      .then((response: ArticlesStrapi) => {
-        return response.data.map((article) => ({
-          id: article.id,
-          title: article.attributes.title,
-          slug: article.attributes.slug,
-        }))
-      })
+    const database = await notion.databases.query({
+      database_id: databaseId,
+      sorts: [
+        {
+          property: 'Date',
+          direction: 'descending',
+        },
+      ],
+    })
+
+    database.results.forEach((page) => {
+      const pageId = page.id
+
+      if (isFullPage(page)) {
+        const pageProps = page.properties
+        const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
+        const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+
+        articles.push({
+          id: pageId,
+          title: pageTitle,
+          slug,
+        })
+      }
+    })
   } catch (error) {
-    //
+    console.error(error.body)
   }
 
   return {
