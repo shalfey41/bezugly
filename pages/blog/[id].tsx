@@ -1,6 +1,8 @@
 import { FC } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
+import fetch from 'node-fetch'
 import { NotionToMarkdown } from 'notion-to-md'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -208,25 +210,44 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   let paths = []
   const notion = new Client({ auth: process.env.NOTION_KEY })
+  const n2m = new NotionToMarkdown({ notionClient: notion })
   const databaseId = process.env.NOTION_DATABASE_ID
 
   try {
     const database = await notion.databases.query({
       database_id: databaseId,
     })
+    const pages = database.results.filter((page) => isFullPage(page))
 
-    paths = database.results
-      .map((page) => {
-        if (isFullPage(page)) {
-          const pageProps = page.properties
-          const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+    paths = pages.map((page: PageObjectResponse) => {
+      const pageProps = page.properties
+      const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
 
-          return `/blog/${slug}`
-        }
+      return `/blog/${slug}`
+    })
 
-        return ''
+    const pagesMarkdownBlocks = await Promise.all(pages.map((page) => n2m.pageToMarkdown(page.id)))
+    const imagesPaths = pagesMarkdownBlocks
+      .map((notionBlocks) => {
+        return notionBlocks
+          .filter((item) => item.type === 'image')
+          .map((item) => {
+            const searchedHrefSymbols = ']('
+            const imageHrefIndex = item.parent.indexOf(searchedHrefSymbols)
+
+            if (imageHrefIndex === -1) {
+              return ''
+            }
+
+            const imageUrl = item.parent.slice(imageHrefIndex + searchedHrefSymbols.length, -1)
+
+            return `/api/notion-asset?path=${imageUrl}`
+          })
+          .filter(Boolean)
       })
-      .filter(Boolean)
+      .flat()
+
+    await Promise.all(imagesPaths.map((url) => fetch(url)))
   } catch (error) {
     console.error(error.body)
   }
