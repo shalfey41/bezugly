@@ -153,7 +153,29 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   nextPost = articles[postIndex - 1] || null
 
   const notionBlocks = await n2m.pageToMarkdown(post.id)
-  const content = n2m.toMarkdownString(notionBlocks)
+  const transformedNotionBlocks = notionBlocks.map((item) => {
+    if (item.type !== 'image') {
+      return item
+    }
+
+    const searchedHrefSymbols = ']('
+    const imageHrefIndex = item.parent.indexOf(searchedHrefSymbols)
+
+    if (imageHrefIndex === -1) {
+      return item
+    }
+
+    const imageUrl = item.parent.slice(imageHrefIndex + searchedHrefSymbols.length, -1)
+
+    return {
+      ...item,
+      parent: `${item.parent.slice(
+        0,
+        imageHrefIndex + searchedHrefSymbols.length
+      )}/api/notion-asset?path=${imageUrl})`,
+    }
+  })
+  const content = n2m.toMarkdownString(transformedNotionBlocks)
 
   return {
     props: {
