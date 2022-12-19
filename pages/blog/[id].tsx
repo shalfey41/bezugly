@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
-import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import { NotionToMarkdown } from 'notion-to-md'
 import { getBlockChildren } from 'notion-to-md/build/utils/notion'
 import Link from 'next/link'
@@ -11,7 +10,7 @@ import theme from '../../styles/theme.module.css'
 import style from '../../styles/post.module.css'
 import { Header } from '../../components/Header/Header'
 import { Markdown } from '../../components/Markdown/Markdown'
-import { formatDate } from '../../helpers/post'
+import { formatDate, isPublic } from '../../helpers/post'
 import { ArticleItem } from '../../types/post'
 
 interface Post {
@@ -116,25 +115,28 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
       ],
     })
 
-    articles = database.results.filter(isFullPage).map((page) => {
-      const pageId = page.id
-      const pageProps = page.properties
-      const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
-      const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
-      const date = pageProps.Date[pageProps.Date.type]?.start ?? new Date().toLocaleDateString()
-      const thumbnail = pageProps['Files & media'][pageProps['Files & media'].type][0]
-      const thumbnailSrc = thumbnail
-        ? thumbnail[thumbnail.type].url
-        : 'https://bezugly.ru/images/main-page-avatar.jpg'
+    articles = database.results
+      .filter(isFullPage)
+      .filter(isPublic)
+      .map((page) => {
+        const pageId = page.id
+        const pageProps = page.properties
+        const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
+        const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+        const date = pageProps.Date[pageProps.Date.type]?.start ?? new Date().toLocaleDateString()
+        const thumbnail = pageProps['Files & media'][pageProps['Files & media'].type][0]
+        const thumbnailSrc = thumbnail
+          ? thumbnail[thumbnail.type].url
+          : 'https://bezugly.ru/images/main-page-avatar.jpg'
 
-      return {
-        id: pageId,
-        title: pageTitle,
-        slug,
-        thumbnailSrc,
-        date,
-      }
-    })
+        return {
+          id: pageId,
+          title: pageTitle,
+          slug,
+          thumbnailSrc,
+          date,
+        }
+      })
   } catch (error) {
     console.error(error.body)
   }
@@ -215,8 +217,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     })
 
     paths = database.results
-      .filter((page) => isFullPage(page))
-      .map((page: PageObjectResponse) => {
+      .filter(isFullPage)
+      .filter(isPublic)
+      .map((page) => {
         const pageProps = page.properties
         const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
 

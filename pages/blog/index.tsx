@@ -1,14 +1,13 @@
 import { FC } from 'react'
 import { GetStaticProps } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
-import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import Head from 'next/head'
 import Link from 'next/link'
 
 import style from '../../styles/posts.module.css'
 import theme from '../../styles/theme.module.css'
 import { Header } from '../../components/Header/Header'
-import { getWord } from '../../helpers/post'
+import { getWord, isPublic } from '../../helpers/post'
 
 interface Article {
   id: string
@@ -83,8 +82,9 @@ export const getStaticProps: GetStaticProps = async () => {
     })
 
     articles = database.results
-      .filter((page) => isFullPage(page))
-      .map((page: PageObjectResponse) => {
+      .filter(isFullPage)
+      .filter(isPublic)
+      .map((page) => {
         const pageId = page.id
         const pageProps = page.properties
         const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text

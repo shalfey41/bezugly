@@ -1,3 +1,5 @@
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
+
 const cases = [2, 0, 1, 1, 1, 2]
 // words: '1 заметка', '2 заметки', '5 заметок'
 export const getWord = (count, words) => {
@@ -59,4 +61,12 @@ export const formatDate = (dateAndTime = '') => {
   }
 
   return 'Сегодня'
+}
+
+export const isPublic = (page: PageObjectResponse) => {
+  if (page.properties.Public?.type !== 'checkbox') {
+    return false
+  }
+
+  return page.properties.Public.checkbox
 }
