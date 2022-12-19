@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
-import fetch from 'node-fetch'
 import { NotionToMarkdown } from 'notion-to-md'
+import { getBlockChildren } from 'notion-to-md/build/utils/notion'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -100,7 +100,7 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   const notion = new Client({ auth: process.env.NOTION_KEY })
   const n2m = new NotionToMarkdown({ notionClient: notion })
   const databaseId = process.env.NOTION_DATABASE_ID
-  const articles: ArticleItem[] = []
+  let articles: ArticleItem[] = []
   let post: ArticleItem | null = null
   let prevPost: ArticleItem = null
   let nextPost: ArticleItem = null
@@ -116,26 +116,23 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
       ],
     })
 
-    database.results.forEach((page) => {
+    articles = database.results.filter(isFullPage).map((page) => {
       const pageId = page.id
+      const pageProps = page.properties
+      const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
+      const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+      const date = pageProps.Date[pageProps.Date.type]?.start ?? new Date().toLocaleDateString()
+      const thumbnail = pageProps['Files & media'][pageProps['Files & media'].type][0]
+      const thumbnailSrc = thumbnail
+        ? thumbnail[thumbnail.type].url
+        : 'https://bezugly.ru/images/main-page-avatar.jpg'
 
-      if (isFullPage(page)) {
-        const pageProps = page.properties
-        const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
-        const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
-        const date = pageProps.Date[pageProps.Date.type]?.start ?? new Date().toLocaleDateString()
-        const thumbnail = pageProps['Files & media'][pageProps['Files & media'].type][0]
-        const thumbnailSrc = thumbnail
-          ? thumbnail[thumbnail.type].url
-          : 'https://bezugly.ru/images/main-page-avatar.jpg'
-
-        articles.push({
-          id: pageId,
-          title: pageTitle,
-          slug,
-          thumbnailSrc,
-          date,
-        })
+      return {
+        id: pageId,
+        title: pageTitle,
+        slug,
+        thumbnailSrc,
+        date,
       }
     })
   } catch (error) {
@@ -154,30 +151,30 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   prevPost = articles[postIndex + 1] || null
   nextPost = articles[postIndex - 1] || null
 
-  const notionBlocks = await n2m.pageToMarkdown(post.id)
-  const transformedNotionBlocks = notionBlocks.map((item) => {
-    if (item.type !== 'image') {
-      return item
+  // Подмена изображений из S3: https://bezugly.ru/blog/notion-api-files
+  const pageBlocks = (await getBlockChildren(notion, post.id, null)).map((block) => {
+    if (!('type' in block) || block.type !== 'image') {
+      return block
     }
 
-    const searchedHrefSymbols = ']('
-    const imageHrefIndex = item.parent.indexOf(searchedHrefSymbols)
-
-    if (imageHrefIndex === -1) {
-      return item
+    if (block.image.type !== 'file') {
+      return block
     }
-
-    const imageUrl = item.parent.slice(imageHrefIndex + searchedHrefSymbols.length, -1)
 
     return {
-      ...item,
-      parent: `${item.parent.slice(
-        0,
-        imageHrefIndex + searchedHrefSymbols.length
-      )}/api/notion-asset?path=${imageUrl})`,
+      ...block,
+      image: {
+        ...block.image,
+        file: {
+          ...block.image.file,
+          url: `/api/notion-file-blocks/${block.id}`,
+        },
+      },
     }
   })
-  const content = n2m.toMarkdownString(transformedNotionBlocks)
+
+  const notionBlocks = await n2m.blocksToMarkdown(pageBlocks)
+  const content = n2m.toMarkdownString(notionBlocks)
 
   return {
     props: {
@@ -203,51 +200,28 @@ export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
           }
         : null,
     },
-    revalidate: 60,
+    revalidate: 10,
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths = []
+  let paths: string[] = []
   const notion = new Client({ auth: process.env.NOTION_KEY })
-  const n2m = new NotionToMarkdown({ notionClient: notion })
   const databaseId = process.env.NOTION_DATABASE_ID
 
   try {
     const database = await notion.databases.query({
       database_id: databaseId,
     })
-    const pages = database.results.filter((page) => isFullPage(page))
 
-    paths = pages.map((page: PageObjectResponse) => {
-      const pageProps = page.properties
-      const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
+    paths = database.results
+      .filter((page) => isFullPage(page))
+      .map((page: PageObjectResponse) => {
+        const pageProps = page.properties
+        const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
 
-      return `/blog/${slug}`
-    })
-
-    const pagesMarkdownBlocks = await Promise.all(pages.map((page) => n2m.pageToMarkdown(page.id)))
-    const imagesPaths = pagesMarkdownBlocks
-      .map((notionBlocks) => {
-        return notionBlocks
-          .filter((item) => item.type === 'image')
-          .map((item) => {
-            const searchedHrefSymbols = ']('
-            const imageHrefIndex = item.parent.indexOf(searchedHrefSymbols)
-
-            if (imageHrefIndex === -1) {
-              return ''
-            }
-
-            const imageUrl = item.parent.slice(imageHrefIndex + searchedHrefSymbols.length, -1)
-
-            return `/api/notion-asset?path=${imageUrl}`
-          })
-          .filter(Boolean)
+        return `/blog/${slug}`
       })
-      .flat()
-
-    await Promise.all(imagesPaths.map((url) => fetch(url)))
   } catch (error) {
     console.error(error.body)
   }

@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { GetStaticProps } from 'next'
 import { Client, isFullPage } from '@notionhq/client'
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -10,7 +11,7 @@ import { Header } from '../../components/Header/Header'
 import { getWord } from '../../helpers/post'
 
 interface Article {
-  id: number
+  id: string
   title: string
   slug: string
 }
@@ -68,7 +69,7 @@ const Blog: FC<Props> = ({ articles = [] }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const notion = new Client({ auth: process.env.NOTION_KEY })
   const databaseId = process.env.NOTION_DATABASE_ID
-  const articles = []
+  let articles: Article[] = []
 
   try {
     const database = await notion.databases.query({
@@ -81,21 +82,20 @@ export const getStaticProps: GetStaticProps = async () => {
       ],
     })
 
-    database.results.forEach((page) => {
-      const pageId = page.id
-
-      if (isFullPage(page)) {
+    articles = database.results
+      .filter((page) => isFullPage(page))
+      .map((page: PageObjectResponse) => {
+        const pageId = page.id
         const pageProps = page.properties
         const pageTitle = pageProps.Pages[pageProps.Pages.type][0].plain_text
         const slug = pageProps.Slug[pageProps.Slug.type][0].plain_text
 
-        articles.push({
+        return {
           id: pageId,
           title: pageTitle,
           slug,
-        })
-      }
-    })
+        }
+      })
   } catch (error) {
     console.error(error.body)
   }
@@ -104,7 +104,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       articles,
     },
-    revalidate: 60,
+    revalidate: 10,
   }
 }
 
