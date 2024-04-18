@@ -40,26 +40,6 @@ export const NavList: FC<Props> = ({ className }) => {
             </a>
           </Link>
         </li>
-        <li className={style.navListItem}>
-          <a
-            className={classnames(theme.link, style.navListItemLink)}
-            href="https://karpov.courses/frontend"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span className={theme.linkUnderline}>Фронденд для миддлов</span>
-          </a>
-        </li>
-        <li className={style.navListItem}>
-          <a
-            className={classnames(theme.link, style.navListItemLink)}
-            href="https://t.me/sexy_frontend"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span className={theme.linkUnderline}>Телеграм-канал</span>
-          </a>
-        </li>
       </ul>
     </nav>
   )

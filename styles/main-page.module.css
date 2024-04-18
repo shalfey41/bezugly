@@ -77,7 +77,7 @@
     }
 }
 
-@media all and (min-width: 1520px) {
+@media all and (min-width: 1220px) {
     .text {
         margin-right: 60px;
     }
