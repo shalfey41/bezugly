@@ -36,7 +36,9 @@ export const NavList: FC<Props> = ({ className }) => {
                 [style.navListItemLinkActive]: isReactCourse,
               })}
             >
-              <span className={!isReactCourse ? theme.linkUnderline : ''}>Реакт для джунов</span>
+              <span className={!isReactCourse ? theme.linkUnderline : ''}>
+                Реакт для джунов (2020)
+              </span>
             </a>
           </Link>
         </li>

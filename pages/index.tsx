@@ -13,17 +13,9 @@ const MainPage: FC = () => {
     <div className={`${theme.page} ${style.page}`}>
       <Head>
         <title>Дима Безуглый</title>
-        <meta property="og:title" content="Дима Безуглый, разработчик" />
-        <meta property="og:site_name" content="Дима Безуглый, разработчик" />
-        <meta name="twitter:title" content="Дима Безуглый, разработчик" />
-        <meta
-          property="og:description"
-          content="Отвечаю за разработку frogly.app и помогаю разработчикам стать сильнее"
-        />
-        <meta
-          name="twitter:description"
-          content="Отвечаю за разработку frogly.app и помогаю разработчикам стать сильнее"
-        />
+        <meta property="og:title" content="Дима Безуглый" />
+        <meta property="og:site_name" content="Дима Безуглый" />
+        <meta name="twitter:title" content="Дима Безуглый" />
         <meta property="og:image" content="https://bezugly.ru/images/main-page-avatar.jpg" />
         <meta
           property="twitter:image:src"
@@ -48,21 +40,12 @@ const MainPage: FC = () => {
             />
             <div className={style.textColumn}>
               <p className={`${theme.text} ${style.text}`}>
-                Отвечаю за&nbsp;разработку{' '}
-                <a
-                  href="https://frogly.app"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={theme.link}
-                >
-                  <span className={theme.linkUnderline}>Frogly</span>
-                </a>
-                . Раньше руководил командой фронтенда в&nbsp;рекламном отделе&nbsp;VK, разрабатывал
+                Руководил командой фронтенда в&nbsp;рекламном отделе&nbsp;VK, разрабатывал
                 интерфейсы в&nbsp;Яндексе и&nbsp;ВКонтакте.
               </p>
               <p className={`${theme.text} ${style.text}`}>
-                Обучаю фронтенду и помогаю разработчикам стать сильнее: преподаю на&nbsp;курсах,
-                пишу заметки, читаю доклады и&nbsp;консультирую лично.
+                Обучал фронтенду и помогал разработчикам стать сильнее: преподавал на&nbsp;курсах,
+                писал заметки, читал доклады и&nbsp;консультировал лично.
               </p>
             </div>
           </div>
