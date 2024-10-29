@@ -42,6 +42,17 @@ export const NavList: FC<Props> = ({ className }) => {
             </a>
           </Link>
         </li>
+        <li className={style.navListItem}>
+          <Link href="https://www.linkedin.com/in/bezugly/" target="_blank" passHref>
+            <a
+              className={classnames(theme.link, style.navListItemLink, {
+                [style.navListItemLinkActive]: isReactCourse,
+              })}
+            >
+              <span className={!isReactCourse ? theme.linkUnderline : ''}>LinkedIn</span>
+            </a>
+          </Link>
+        </li>
       </ul>
     </nav>
   )
